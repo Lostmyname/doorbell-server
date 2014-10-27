@@ -9,6 +9,6 @@ set :server, 'puma'
 
 # routes
 post '/' do
-  puts params
+  halt 401 if params[:token] != ENV['SLACK_TOKEN'] 
   Pusher.trigger('doorbell', 'buzz', nil)
 end
