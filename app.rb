@@ -9,6 +9,6 @@ set :server, 'puma'
 
 # routes
 post '/' do
-  pp params
+  puts params
   Pusher.trigger('doorbell', 'buzz', nil)
 end
