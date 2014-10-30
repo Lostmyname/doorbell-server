@@ -14,7 +14,14 @@ post '/' do
   HTTParty.post(
     ENV['SLACK_WEBHOOK_URL'],
     body: {
-      text: "We've opened the door for you, #{params[:user_name]}."
+      text: [
+        "#{params[:user_name]} gave me a buzz.",
+        "Gettin’ my buzz on for #{params[:user_name]}!",
+        "Buzzing with #{params[:user_name]}.",
+        "Who’s buzzing? #{params[:user_name]} is buzzing.",
+        "I don’t buzz for anyone. Well, except for #{params[:user_name]}.",
+        "Buzz off #{params[:user_name]}!"
+      ].sample
     }.to_json,
     options: {
       headers: {
