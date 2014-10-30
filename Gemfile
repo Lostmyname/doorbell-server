@@ -5,4 +5,5 @@ gem 'pusher'
 gem 'dotenv'
 gem 'sinatra'
 gem 'sinatra-contrib', require: false
+gem 'httparty'
 gem 'puma'
