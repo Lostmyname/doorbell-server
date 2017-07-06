@@ -3,14 +3,18 @@ Bundler.require
 
 # config bits
 Dotenv.load
-Pusher.url = ENV['PUSHER_URL']
-require 'sinatra/reloader' if development?
 set :server, 'puma'
+Pusher.app_id = ENV.fetch('PUSHER_APP_ID')
+Pusher.key = ENV.fetch('PUSHER_KEY')
+Pusher.secret = ENV.fetch('PUSHER_SECRET')
+Pusher.cluster = ENV.fetch('PUSHER_CLUSTER')
 
 # routes
 post '/' do
   halt 401 if params[:token] != ENV['SLACK_TOKEN']
+
   Pusher.trigger('doorbell', 'buzz', nil)
+
   HTTParty.post(
     ENV['SLACK_WEBHOOK_URL'],
     body: {
