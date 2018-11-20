@@ -4,16 +4,23 @@ Bundler.require
 # config bits
 Dotenv.load
 set :server, 'puma'
-Pusher.app_id = ENV.fetch('PUSHER_APP_ID')
-Pusher.key = ENV.fetch('PUSHER_KEY')
-Pusher.secret = ENV.fetch('PUSHER_SECRET')
-Pusher.cluster = ENV.fetch('PUSHER_CLUSTER')
+
+pusher_client = Pusher::Client.new(
+  app_id: ENV.fetch('PUSHER_APP_ID'),
+  key: ENV.fetch('PUSHER_KEY'),
+  secret: ENV.fetch('PUSHER_SECRET'),
+  cluster: ENV.fetch('PUSHER_CLUSTER'),
+  encrypted: true
+)
 
 # routes
 post '/' do
   halt 401 if params[:token] != ENV['SLACK_TOKEN']
 
-  Pusher.trigger('doorbell', 'buzz', nil)
+  pusher_client.trigger('doorbell', 'buzz', {
+    message: 'open!'
+  })
+ 
 
   HTTParty.post(
     ENV['SLACK_WEBHOOK_URL'],
